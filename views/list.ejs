@@ -1,0 +1,49 @@
+<%-include("header")-%>
+
+
+
+<!-- TITLE -->
+
+<div class="tl ">
+  <h1>T O D O</h1>
+  <div class="tlr"> <%=kindOfDay%> </div>
+</div>
+
+
+<!-- todolist block -->
+<div class="box1">
+
+  <div class="item enter">
+    <form class="" action="/" method="post">
+      <input type="text" name="newItem" class="ip1" placeholder=" Create a new todo..." autocomplete="off"></input>
+      <!-- <button type="submit" name="list">+</button> -->
+    </form>
+  </div>
+</div>
+
+<div class="box">
+  <% for(var i=0;i<itemsArray.length;i++){ %>
+  <div class="item control-group">
+    <label class="control control-checkbox">
+
+      <input type="checkbox" class="">
+      <p> <%= itemsArray[i] %> </p>
+      <div class="control_indicator"></div>
+    </label>
+  </div>
+  <% } %>
+
+</div>
+
+
+
+
+
+<div class="footer-class">
+  <p>Made with Ease</p>
+
+</div>
+
+
+
+<%-include("footer")-%>
