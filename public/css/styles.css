@@ -11,6 +11,11 @@ body{
   width: 497.4px;
   color: white;
 }
+
+.tll {
+  display: inline-block;
+}
+
 .tlr{
   font-family: 'Montez', cursive;
   font-style: italic;
