@@ -5,8 +5,14 @@
 <!-- TITLE -->
 
 <div class="tl ">
-  <h1>T O D O</h1>
-  <div class="tlr"> <%=kindOfDay%> </div>
+  <div class="tll">
+    <h1>T O D O</h1>
+  </div>
+  <div class="tlr">
+<%=kindOfDay%>
+
+  </div>
+
 </div>
 
 
@@ -15,23 +21,33 @@
 
   <div class="item enter">
     <form class="" action="/" method="post">
-      <input type="text" name="newItem" class="ip1" placeholder=" Create a new todo..." autocomplete="off"></input>
+      <input type="text" name="newItem" class="ip1" placeholder=" Create a new todo..." onfocus="this.placeholder=''" onblur="this.placeholder=' Create a new todo...'" autocomplete="off"></input>
       <!-- <button type="submit" name="list">+</button> -->
     </form>
   </div>
 </div>
 
 <div class="box">
-  <% for(var i=0;i<itemsArray.length;i++){ %>
+
+
+  <%itemsArray.forEach(function(item_i){%>
+
+<form  action="/delete" method="post">
   <div class="item control-group">
     <label class="control control-checkbox">
-
-      <input type="checkbox" class="">
-      <p> <%= itemsArray[i] %> </p>
+      <input type="checkbox" id="myCheck" name="checkedBox" value="<%=item_i._id%>" onChange="this.form.submit()">
+      <p> <%= item_i.name %> </p>
+      <%=console.log( (item_i) );%>
+      <%if(deleteItemsArray.includes(item_i._id)){%>
+        <%=document.getElementById("myCheck").checked=true%>
+        <%}%>
       <div class="control_indicator"></div>
     </label>
   </div>
-  <% } %>
+</form>
+
+
+  <%})%>
 
 </div>
 
