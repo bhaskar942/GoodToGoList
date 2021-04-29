@@ -88,12 +88,12 @@ app.post("/delete",function(req,res){
   // console.log(req.body.checkedBox);
   const toDeleteId=req.body.checkedBox;
   Item.findByIdAndRemove( toDeleteId,function(err){
-  //   if(err){
-  //     console.log(err);
-  //   }
-  //   else{
-  //     console.log("Item Deleted");
-  //   }
+    if(err){
+      console.log(err);
+    }
+    else{
+      console.log("Item Deleted");
+    }
   });
   res.redirect("/");
 })
