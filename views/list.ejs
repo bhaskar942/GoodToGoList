@@ -35,12 +35,8 @@
 <form  action="/delete" method="post">
   <div class="item control-group">
     <label class="control control-checkbox">
-      <input type="checkbox" id="myCheck" name="checkedBox" value="<%=item_i._id%>" onChange="this.form.submit()">
+      <input type="checkbox" name="checkedBox" value="<%=item_i._id%>" onChange="this.form.submit()">
       <p> <%= item_i.name %> </p>
-      <%=console.log( (item_i) );%>
-      <%if(deleteItemsArray.includes(item_i._id)){%>
-        <%=document.getElementById("myCheck").checked=true%>
-        <%}%>
       <div class="control_indicator"></div>
     </label>
   </div>

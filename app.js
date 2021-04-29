@@ -85,19 +85,16 @@ app.post("/", function(req, res) {
 })
 
 app.post("/delete",function(req,res){
-  console.log(req.body.checkedBox);
+  // console.log(req.body.checkedBox);
   const toDeleteId=req.body.checkedBox;
-  if(!deleteItems.includes(toDeleteId)){
-    deleteItems.push(toDeleteId);
-  }
-  // Item.findByIdAndRemove( toDeleteId,function(err){
+  Item.findByIdAndRemove( toDeleteId,function(err){
   //   if(err){
   //     console.log(err);
   //   }
   //   else{
   //     console.log("Item Deleted");
   //   }
-  // });
+  });
   res.redirect("/");
 })
 
