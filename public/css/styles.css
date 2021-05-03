@@ -18,10 +18,10 @@ body{
 .tlr{
   font-family: 'Montez', cursive;
   font-style: italic;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   text-align: right;
   float: right;
-  margin-top: 6px;
+  margin-top: -1px;
   display: inline-block;
 }
 h1{

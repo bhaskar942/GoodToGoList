@@ -21,6 +21,7 @@
 
   <div class="item enter">
     <form class="" action="/" method="post">
+      <input type="hidden" name="list" value="<%=kindOfDay%>" >
       <input type="text" name="newItem" class="ip1" placeholder=" Create a new todo..." onfocus="this.placeholder=''" onblur="this.placeholder=' Create a new todo...'" autocomplete="off"></input>
       <!-- <button type="submit" name="list">+</button> -->
     </form>
@@ -35,8 +36,11 @@
 <form  action="/delete" method="post">
   <div class="item control-group">
     <label class="control control-checkbox">
-      <input type="checkbox" name="checkedBox" value="<%=item_i._id%>" onChange="this.form.submit()">
+
+      <input type="checkbox" name="checkedBox" value="<%=item_i._id%>"  onChange="this.form.submit()">
+
       <p> <%= item_i.name %> </p>
+      <input type="hidden" name="list" value="<%=kindOfDay%>">
       <div class="control_indicator"></div>
     </label>
   </div>
@@ -52,6 +56,7 @@
 
 
 <div class="footer-class">
+  <br>
   <p>Made with Ease</p>
 
 </div>

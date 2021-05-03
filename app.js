@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const date = require(__dirname + '/date.js')
-
+const _=require("lodash")
 const app = express();
 
 // var ni = "";
@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://localhost:27017/itemsDB", {
+mongoose.connect("mongodb+srv://bhaskar942:bhaskar0002@cluster0.wqkwh.mongodb.net/itemsDB", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false
@@ -35,11 +35,16 @@ const item3 = new Item({
   name: "Keep up the good work"
 }); //document 3 making
 const defaultItems = [item1,item2,item3]; //document array making
-var deleteItems=[];
+
+const listSchema={
+  name: String,
+  items: [itemsSchema]
+};
+const List=mongoose.model("List",listSchema);
+
 
 
 app.get("/", function(req, res) {
-
   var day = date.getDay();
   Item.find({},function(err,foundItems){
     if(err){
@@ -60,11 +65,41 @@ app.get("/", function(req, res) {
       else{
         res.render("list", {
              kindOfDay: day,
-             itemsArray: foundItems,
-             deleteItemsArray: deleteItems
+             itemsArray: foundItems
            });
       }
     }
+  });
+
+});
+
+app.get("/:customListName",function(req,res){
+  const customListName=_.capitalize(req.params.customListName);
+  console.log(customListName);
+  List.findOne({name: customListName},function(err,foundList){
+    if(err){
+      console.log(err);
+    }
+    else{
+      // console.log(foundList);
+      if(!foundList){
+        console.log("Doesn't Exists!");//so create a new list
+        const newList= new List({
+          name: customListName,
+          items: defaultItems
+        });
+        // console.log("new item created");
+        // const redTo="/"+customListName;
+        newList.save();
+        // console.log("and saved");
+        res.redirect("/"+customListName);
+      }
+      else{
+        console.log("Exists!");//show an existing list
+        res.render("list",{kindOfDay: foundList.name, itemsArray: foundList.items});
+      }
+    }
+
   });
 
 });
@@ -76,28 +111,67 @@ app.get("/about", function(req, res) {
 app.post("/", function(req, res) {
   // console.log(req.body);
   const itemName = req.body.newItem; //ni=new item
+  const list=req.body.list;
   const newItemDoc= new Item({
     name: itemName
   });
-  newItemDoc.save();
-  // console.log(ni);
-  res.redirect("/");
+
+  if(list===date.getDay()){
+    newItemDoc.save();
+    res.redirect("/");
+  }
+  else{
+    List.findOne({name: list},function(err,foundList){
+      if(err){
+        console.log(err);
+      }
+      else{
+        foundList.items.push(newItemDoc);
+        foundList.save();
+        res.redirect("/"+list);
+      }
+    })
+  }
+
+
 })
 
 app.post("/delete",function(req,res){
-  // console.log(req.body.checkedBox);
+  console.log(req.body);
   const toDeleteId=req.body.checkedBox;
-  Item.findByIdAndRemove( toDeleteId,function(err){
-    if(err){
-      console.log(err);
-    }
-    else{
-      console.log("Item Deleted");
-    }
-  });
-  res.redirect("/");
+  const list=req.body.list;
+
+  if(list===date.getDay()){
+    Item.findByIdAndRemove( toDeleteId,function(err){
+      if(err){
+        console.log(err);
+      }
+      else{
+        console.log("Item Deleted");
+      }
+    });
+    res.redirect("/");
+  }
+  else{
+    List.findOneAndUpdate({name: list},{$pull: {items: {_id: toDeleteId}}},function(err,foundList){
+      if(err){
+        console.log(err);
+      }
+      else{
+        res.redirect("/"+list);
+      }
+    })
+  }
+
+
+
 })
 
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3000;
+}
+
 app.listen(3000, function() {
-  console.log("Server up and Running at Port 3000");
+  console.log("Server up succesfully");
 })
